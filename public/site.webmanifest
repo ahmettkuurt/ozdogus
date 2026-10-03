@@ -1,0 +1,13 @@
+{
+  "name": "Özdoğuş Hafriyat",
+  "short_name": "Özdoğuş",
+  "lang": "tr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#E9E6E0",
+  "theme_color": "#0B2E52",
+  "icons": [
+    { "src": "/brand/emblem-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/emblem-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
