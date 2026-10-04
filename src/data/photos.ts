@@ -22,6 +22,7 @@ export const photos = {
   'jcb-3cx': { w: 1024, h: 768 },
   'jcb-1cx': { w: 1024, h: 682 },
   'nh-e37c': { w: 1024, h: 787 },
+  'wacker-ez17': { w: 1024, h: 640 },
   'bobcat-s590': { w: 1024, h: 576 },
   'bomag-bw120': { w: 1024, h: 662 },
   'manitou-1840': { w: 1024, h: 682 },

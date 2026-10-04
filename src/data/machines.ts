@@ -70,7 +70,7 @@ export const machines: Machine[] = [
   },
   {
     id: 'wacker-ez17',
-    // TODO: firmanın kendi EZ17 fotoğrafı — serbest lisanslı EZ17 fotoğrafı bulunamadı
+    image: 'wacker-ez17',
     kind: 'excavator',
     name: 'Wacker Neuson EZ17',
     role: '2 tonluk paletli ekskavatör',
