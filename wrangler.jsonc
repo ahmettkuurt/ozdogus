@@ -1,0 +1,14 @@
+// Cloudflare Workers (statik site) ayarı — `npx wrangler deploy` bunu okur.
+// "name", Cloudflare panelindeki proje adıyla aynı olmalı.
+{
+  "name": "ozdogus",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    // `npm run build` çıktısı (prerender edilmiş sayfalar, _redirects, _headers)
+    "directory": "./dist",
+    // Olmayan adreslerde dist/404.html, 404 durum koduyla
+    "not_found_handling": "404-page",
+    // hizmetler/yikim.html → /hizmetler/yikim (sondaki "/" ve ".html" yönlendirilir)
+    "html_handling": "auto-trailing-slash"
+  }
+}

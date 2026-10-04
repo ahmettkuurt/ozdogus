@@ -1,6 +1,6 @@
-# Cloudflare Pages kurulumu — ozdogushafriyat.com
+# Cloudflare kurulumu — ozdogushafriyat.com
 
-Site ücretsiz **Cloudflare Pages** üzerinde yayınlanır. GitHub'daki `ahmettkuurt/ozdogus` deposuna her
+Site ücretsiz **Cloudflare Workers** (statik site) üzerinde yayınlanır. GitHub'daki `ahmettkuurt/ozdogus` deposuna her
 gönderimde (push) Cloudflare siteyi kendiliğinden yeniden derler ve yayınlar.
 
 Ana adres: **https://www.ozdogushafriyat.com**
@@ -31,26 +31,28 @@ Ana adres: **https://www.ozdogushafriyat.com**
 6. Cloudflare'e dönüp **Check nameservers** deyin. Etkinleşmesi birkaç dakika ile birkaç saat sürer;
    e-posta bildirimi gelir. Sonra e-posta testini yapın.
 
-## 2. Siteyi yayınlama (Pages)
+## 2. Siteyi yayınlama (Workers)
 
-1. Cloudflare panelinde **Workers & Pages** → **Create** → **Pages** sekmesi → **Connect to Git**.
-   (Ekranda önce "Workers" çıkarsa altta "Looking to deploy Pages? Get started" bağlantısını kullanın.)
+Site Cloudflare **Workers** üzerinde statik site olarak çalışır; ayarlar depodaki `wrangler.jsonc` dosyasındadır.
+
+1. Cloudflare panelinde **Workers & Pages** → **Create application** → **Import a repository** (GitHub).
 2. GitHub hesabını bağlayın, `ahmettkuurt/ozdogus` deposunu seçin.
-3. Ayarlar:
+3. "Set up your application" ekranı:
    | Alan | Değer |
    |---|---|
-   | Project name | `ozdogus` |
-   | Production branch | `main` |
-   | Framework preset | `None` |
+   | Project name | `ozdogus` (wrangler.jsonc içindeki `name` ile aynı olmalı) |
    | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   Node sürümü depodaki `.node-version` dosyasından (22) okunur, ayrıca ayar gerekmez.
-4. **Save and Deploy**. İlk derleme 1–3 dakika sürer; site önce `ozdogus.pages.dev` adresinde açılır.
+   | Deploy command | `npx wrangler deploy` |
+   | Preview command | olduğu gibi bırakın |
+   | Enable Preview builds | açık kalabilir |
+   | Protect with Cloudflare Access | **kapalı** (açılırsa site herkese kapanır) |
+   Node sürümü depodaki `.node-version` dosyasından (22) okunur.
+4. **Deploy**. İlk derleme 1–3 dakika sürer; site önce `ozdogus.<hesap-adı>.workers.dev` adresinde açılır.
 
 ## 3. Alan adını siteye bağlama
 
-1. Pages projesi → **Custom domains** → **Set up a custom domain**:
-   - `www.ozdogushafriyat.com` ekleyin → onaylayın (DNS kaydını Cloudflare kendisi oluşturur).
+1. Workers & Pages → `ozdogus` → **Settings** → **Domains & Routes** → **Add** → **Custom domain**:
+   - `www.ozdogushafriyat.com` ekleyin (DNS kaydını Cloudflare kendisi oluşturur).
    - Aynı şekilde `ozdogushafriyat.com` (www'suz) da ekleyin.
 2. **www'suz adresi www'ye yönlendirin:** Alan adı (`ozdogushafriyat.com`) → **Rules** → **Redirect Rules**
    → **Create rule** → şablonlardan **"Redirect from Root to WWW"** seçin. Ya da elle:
@@ -102,4 +104,4 @@ Eski sayfa adresleri (`/kiralik-is-makinalari-istanbul.html` gibi) önce aynı y
 ## Güncelleme
 
 Kodda yapılan değişiklik `main` dalına gönderildiğinde (git push) Cloudflare siteyi kendisi yeniden yayınlar.
-Yayın geçmişi ve gerekirse eski sürüme dönüş: Pages projesi → **Deployments**.
+Yayın geçmişi ve gerekirse eski sürüme dönüş: Workers & Pages → `ozdogus` → **Deployments**.
