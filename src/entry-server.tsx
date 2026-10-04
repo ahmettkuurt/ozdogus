@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import App from './App'
-import { getMeta, headTags, allRoutes, NOT_FOUND_META } from './seo/meta'
+import { getMeta, headTags, allRoutes, sitemapRoutes, NOT_FOUND_META } from './seo/meta'
 import { company } from './data/company'
 
 export function render(url: string) {
@@ -17,5 +17,5 @@ export function render(url: string) {
   return { html, head: headTags(meta) }
 }
 
-export { allRoutes }
+export { allRoutes, sitemapRoutes }
 export const siteUrl = company.siteUrl

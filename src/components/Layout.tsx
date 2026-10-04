@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
-import { company, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
+import { company, tel2Href, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
 import { services } from '../data/services'
+import { publishedProjects } from '../data/projects'
 import { HeadSync } from '../seo/HeadSync'
 import { Icon } from './Icon'
+import { PhoneMenu } from './PhoneMenu'
 
 const nav = [
+  { to: '/', label: 'Ana Sayfa' },
   { to: '/hizmetler', label: 'Hizmetler' },
   { to: '/makine-parki', label: 'Makine Parkı' },
   { to: '/projeler', label: 'Projeler' },
   { to: '/hakkimizda', label: 'Hakkımızda' },
   { to: '/iletisim', label: 'İletişim' },
-]
+].filter((n) => n.to !== '/projeler' || publishedProjects.length > 0)
 
 // Vektör logo (public/brand/logo-*.svg). Oran: 3768 × 1245
 export function Logo({ variant = 'color', height = 50, className }: { variant?: 'color' | 'white'; height?: number; className?: string }) {
@@ -67,15 +70,13 @@ function Header() {
             <ul role="list">
               {nav.map((n) => (
                 <li key={n.to}>
-                  <NavLink to={n.to}>{n.label}</NavLink>
+                  <NavLink to={n.to} end={n.to === '/'}>{n.label}</NavLink>
                 </li>
               ))}
             </ul>
           </nav>
           <div className="header__cta">
-            <a href={telHref} className="btn btn--glass">
-              <Icon name="phone" /> {company.phoneDisplay}
-            </a>
+            <PhoneMenu align="right" />
             <Link to="/teklif-al" className="btn btn--accent">
               Teklif Al <Icon name="arrowRight" />
             </Link>
@@ -102,7 +103,7 @@ function Header() {
         </div>
         <nav aria-label="Mobil menü" onClick={(e) => (e.target as HTMLElement).closest('a') && setOpen(false)}>
           <ul role="list">
-            {[{ to: '/', label: 'Ana Sayfa' }, ...nav, { to: '/teklif-al', label: 'Teklif Al' }].map((n) => (
+            {[...nav, { to: '/teklif-al', label: 'Teklif Al' }].map((n) => (
               <li key={n.to}>
                 <NavLink to={n.to} end={n.to === '/'}>
                   {n.label} <Icon name="arrowRight" />
@@ -112,9 +113,7 @@ function Header() {
           </ul>
         </nav>
         <div className="drawer__actions">
-          <a className="btn btn--accent btn--lg" href={telHref}>
-            <Icon name="phone" /> {company.phoneDisplay}
-          </a>
+          <PhoneMenu className="btn btn--accent btn--lg" up />
           <a className="btn btn--glass btn--lg" href={whatsappHref(WA_DEFAULT)} target="_blank" rel="noopener noreferrer">
             <Icon name="message" /> WhatsApp'tan yazın
           </a>
@@ -127,9 +126,7 @@ function Header() {
 function ActionBar() {
   return (
     <nav className="action-bar" aria-label="Hızlı iletişim">
-      <a href={telHref}>
-        <Icon name="phone" /> Ara
-      </a>
+      <PhoneMenu className="action-bar__btn" label="Ara" up />
       <a href={whatsappHref(WA_DEFAULT)} target="_blank" rel="noopener noreferrer">
         <Icon name="message" /> WhatsApp
       </a>
@@ -140,10 +137,16 @@ function ActionBar() {
   )
 }
 
+const socialLabels: Record<keyof typeof company.social, string> = {
+  instagram: 'Instagram',
+  facebook: 'Facebook',
+  tiktok: 'TikTok',
+}
+
 function Footer() {
   const a = company.address
   const addressLine = [a.street, a.district, a.city].filter(Boolean).join(', ')
-  const social = Object.entries(company.social).filter(([, url]) => url)
+  const social = (Object.entries(company.social) as [keyof typeof company.social, string][]).filter(([, url]) => url)
   return (
     <footer className="footer">
       <div className="wrap">
@@ -153,6 +156,17 @@ function Footer() {
               <Logo variant="white" height={56} />
             </Link>
             <p>Hafriyat, temel kazısı, yıkım, kaya kırma, dolgu-tesviye ve operatörlü iş makinesi kiralamada güvenilir çözüm ortağınız.</p>
+            {social.length > 0 && (
+              <ul className="social" role="list">
+                {social.map(([k, url]) => (
+                  <li key={k}>
+                    <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`${socialLabels[k]} (yeni sekmede açılır)`} title={socialLabels[k]}>
+                      <Icon name={k} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <h2>Hizmetler</h2>
@@ -168,20 +182,18 @@ function Footer() {
               {nav.map((n) => (
                 <li key={n.to}><Link to={n.to}>{n.label}</Link></li>
               ))}
-              <li><Link to="/teklif-al">Hafriyat Hesaplama</Link></li>
+              <li><Link to="/teklif-al">Teklif Al</Link></li>
             </ul>
           </div>
           <div>
             <h2>İletişim</h2>
             <ul role="list">
               <li><a href={telHref}>{company.phoneDisplay}</a></li>
+              {company.phone2 && <li><a href={tel2Href}>{company.phone2Display}</a></li>}
               <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
               {addressLine && <li>{addressLine}</li>}
               {company.hours.map((h) => (
                 <li key={h.days}>{h.days}<br />{h.time}</li>
-              ))}
-              {social.map(([k, url]) => (
-                <li key={k}><a href={url} target="_blank" rel="noopener noreferrer" style={{ textTransform: 'capitalize' }}>{k}</a></li>
               ))}
             </ul>
           </div>

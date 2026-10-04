@@ -1,18 +1,14 @@
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { company, telHref, whatsappHref } from '../data/company'
 import { services } from '../data/services'
-import { Calculator } from '../components/Calculator'
-import { defaultCalc, parseCalc, summarize, type CalcInput } from '../lib/excavation'
 import { PageHead } from '../components/Blocks'
 import { Icon } from '../components/Icon'
+import { PhoneMenu } from '../components/PhoneMenu'
 
 type Fields = { name: string; phone: string; service: string; location: string; volume: string; message: string; kvkk: boolean }
-type Draft = Omit<Fields, 'volume'> & { volume: string | null }
 type Errors = Partial<Record<keyof Fields, string>>
 
-const empty: Draft = { name: '', phone: '', service: '', location: '', volume: null, message: '', kvkk: false }
-
-const noSubscribe = () => () => {}
+const empty: Fields = { name: '', phone: '', service: '', location: '', volume: '', message: '', kvkk: false }
 
 const labels: Record<keyof Fields, string> = {
   name: 'Ad soyad',
@@ -46,23 +42,12 @@ function FieldError({ id, msg }: { id: string; msg?: string }) {
 }
 
 export function QuotePage() {
-  // Ana sayfadaki hesaplayıcıdan gelen ölçüler (?l=&w=&d=…). Sunucu anlık görüntüsü boş olduğu için
-  // prerender çıktısıyla hydrate uyuşmazlığı oluşmaz; değerler hydrate sonrası uygulanır.
-  const search = useSyncExternalStore(noSubscribe, () => window.location.search, () => '')
-  const fromUrl = useMemo(() => parseCalc(search), [search])
-  const [draft, setDraft] = useState<Draft>(empty)
+  const [f, setFields] = useState<Fields>(empty)
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState<Partial<Record<keyof Fields, boolean>>>({})
   const [showSummary, setShowSummary] = useState(false)
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'whatsapp' | 'failed'>('idle')
   const summaryRef = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLDivElement>(null)
-
-  const f: Fields = {
-    ...draft,
-    volume: draft.volume ?? (fromUrl ? summarize(fromUrl) : ''),
-    service: draft.service || (fromUrl ? 'hafriyat-ve-kazi' : ''),
-  }
 
   useEffect(() => {
     if (showSummary) summaryRef.current?.focus()
@@ -70,7 +55,7 @@ export function QuotePage() {
 
   const update = <K extends keyof Fields>(k: K, v: Fields[K]) => {
     const next = { ...f, [k]: v }
-    setDraft(next)
+    setFields(next)
     if (touched[k]) setErrors(validate(next))
   }
   const blur = (k: keyof Fields) => () => {
@@ -82,12 +67,6 @@ export function QuotePage() {
     'aria-invalid': err(k) ? (true as const) : undefined,
     'aria-describedby': err(k) ? `${k}-hata` : undefined,
   })
-
-  const fromCalculator = (c: CalcInput) => {
-    setDraft({ ...f, volume: summarize(c), service: f.service || 'hafriyat-ve-kazi' })
-    formRef.current?.scrollIntoView({ block: 'start' })
-    document.getElementById('name')?.focus({ preventScroll: true })
-  }
 
   const message = () => {
     const svc = services.find((s) => s.slug === f.service)?.title ?? f.service
@@ -139,21 +118,14 @@ export function QuotePage() {
     <>
       <PageHead
         eyebrow="Teklif al"
-        title="Hesaplayın, teklifinizi alın."
-        lead="Önce kazı hacmini ve kamyon seferini tahmin edin, sonra formu gönderin. Keşif ücretsiz; yazılı teklif genellikle aynı gün ya da ertesi iş günü elinizde."
+        title="İşinizi anlatın, teklifinizi alın."
+        lead="Formu doldurun ya da bizi arayın. Keşif ücretsiz; yazılı teklif genellikle aynı gün ya da ertesi iş günü elinizde."
         crumbs={[{ label: 'Teklif Al' }]}
         image="nakliye"
       />
 
-      <section className="sec surface" aria-labelledby="hesaplayici">
-        <div className="wrap">
-          <h2 id="hesaplayici" className="sr-only">Hafriyat hacim hesaplayıcı</h2>
-          <Calculator key={search} initial={fromUrl ?? defaultCalc} onRequest={fromCalculator} requestLabel="Değerleri forma aktar" />
-        </div>
-      </section>
-
       <section className="sec" id="teklif-formu" aria-labelledby="form-baslik">
-        <div className="wrap split split--form" ref={formRef}>
+        <div className="wrap split split--form">
           <div>
             <p className="eyebrow">Teklif formu</p>
             <h2 id="form-baslik" className="h2" style={{ margin: '18px 0 32px' }}>İşinizi anlatın.</h2>
@@ -218,7 +190,7 @@ export function QuotePage() {
                   <div className="field span-2">
                     <label htmlFor="volume">{labels.volume}</label>
                     <input id="volume" className="input" value={f.volume} onChange={(e) => update('volume', e.target.value)} aria-describedby="volume-ipucu" />
-                    <p className="hint" id="volume-ipucu">Yukarıdaki hesaplayıcıdan “Değerleri forma aktar” ile otomatik doldurabilirsiniz.</p>
+                    <p className="hint" id="volume-ipucu">Biliyorsanız yaklaşık ölçüleri yazın (ör. 20 × 15 m, 3 m derinlik); bilmiyorsanız boş bırakın.</p>
                   </div>
                   <div className="field span-2">
                     <label htmlFor="message">{labels.message}</label>
@@ -248,7 +220,7 @@ export function QuotePage() {
             <h2>Beklemek istemiyor musunuz?</h2>
             <p style={{ marginBottom: 20 }}>Hafta içi ve cumartesi {company.hours[0].time} arası doğrudan arayın. {company.hoursNote}</p>
             <div className="stack">
-              <a href={telHref} className="btn btn--accent btn--lg"><Icon name="phone" /> {company.phoneDisplay}</a>
+              <PhoneMenu className="btn btn--accent btn--lg" />
               <a href={whatsappHref('Merhaba, teklif almak istiyorum.')} className="btn btn--glass btn--lg" target="_blank" rel="noopener noreferrer"><Icon name="message" /> WhatsApp</a>
             </div>
           </aside>

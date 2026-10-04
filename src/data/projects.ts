@@ -53,3 +53,6 @@ export const projects: Project[] = [
     sample: true,
   },
 ]
+
+// Sitede yalnızca gerçek (örnek olmayan) projeler gösterilir; hiç yoksa Projeler sayfası menüden ve Google'dan gizlenir.
+export const publishedProjects = projects.filter((p) => !p.sample)

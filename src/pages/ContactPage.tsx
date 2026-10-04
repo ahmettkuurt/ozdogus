@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { company, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
+import { company, tel2Href, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
 import { Icon } from '../components/Icon'
 import { PageHead } from '../components/Blocks'
 
@@ -58,6 +58,12 @@ export function ContactPage() {
                 <span className="ico"><Icon name="phone" /></span>
                 <span><small>Telefon</small><strong>{company.phoneDisplay}</strong></span>
               </a>
+              {company.phone2 && (
+                <a className="contact-card" href={tel2Href}>
+                  <span className="ico"><Icon name="phone" /></span>
+                  <span><small>Telefon 2</small><strong>{company.phone2Display}</strong></span>
+                </a>
+              )}
               <a className="contact-card" href={whatsappHref(WA_DEFAULT)} target="_blank" rel="noopener noreferrer">
                 <span className="ico"><Icon name="message" /></span>
                 <span><small>WhatsApp</small><strong>Mesaj gönderin</strong></span>

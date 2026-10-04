@@ -14,6 +14,7 @@ export type Service = {
   lead: string
   body: string[]
   scope: string[]
+  // Kullanılan makineler — machines.ts içindeki id'ler
   machines: string[]
   faqs: Faq[]
 }
@@ -42,15 +43,11 @@ export const services: Service[] = [
       'Lazer nivo ile kot kontrolü',
       'Hafriyatın eş zamanlı nakliyesi',
     ],
-    machines: ['Paletli ekskavatör', 'Damperli kamyon', 'Kazıcı yükleyici'],
+    machines: ['hitachi-135', 'jcb-3cx', 'nh-e37c', 'wacker-ez17'],
     faqs: [
       {
         q: 'Temel kazısı fiyatı nasıl belirlenir?',
         a: 'Fiyat; kazılacak hacim (m³), zemin cinsi (toprak, kil, kaya), sahaya erişim, döküm sahasına mesafe ve iş takvimine göre belirlenir. Kesin fiyat için ücretsiz yerinde keşif yapıyoruz.',
-      },
-      {
-        q: 'Kazı için hangi izinler gerekir?',
-        a: 'Yapı ruhsatı alınmış parsellerde belediyenin hafriyat ve döküm izni gerekir. Döküm sahası ve nakliye belgeleri konusunda süreci sizinle birlikte yürütüyoruz.',
       },
       {
         q: 'Bir temel kazısı ne kadar sürer?',
@@ -64,10 +61,10 @@ export const services: Service[] = [
     imageAlt: 'Yıkım ekskavatörü bir binanın çelik iskeletini söküyor',
     code: 'YK',
     title: 'Bina Yıkımı',
-    short: 'Ruhsatlı, kontrollü ve çevreye duyarlı yıkım; molozun ayrıştırılması ve taşınması dahil.',
+    short: 'Kontrollü ve çevreye duyarlı yıkım; molozun ayrıştırılması ve taşınması dahil.',
     metaTitle: 'Bina Yıkımı ve Kontrollü Yıkım',
     metaDescription:
-      'Ruhsatlı, kontrollü bina yıkımı. Komşu yapıları koruyan yıkım planı, toz kontrolü, moloz ayrıştırma ve nakliye ile güvenli yıkım hizmeti.',
+      'Kontrollü bina yıkımı. Komşu yapıları koruyan yıkım planı, toz kontrolü, moloz ayrıştırma ve nakliye ile güvenli yıkım hizmeti.',
     lead: 'Yıkım hızlı görünen ama planlaması en çok dikkat isteyen iştir. Amaç binayı yıkmak değil; komşuyu, yolu ve çalışanı koruyarak parseli temiz teslim etmektir.',
     body: [
       'Yıkım öncesinde elektrik, su ve doğalgaz bağlantılarının kesildiğini doğruluyor, yıkım sırasını ve makine konumlarını komşu yapılara göre planlıyoruz. Gerekli durumlarda yıkım yukarıdan aşağıya, kat kat ilerler.',
@@ -81,12 +78,8 @@ export const services: Service[] = [
       'Sulama ile toz kontrolü',
       'Moloz ayrıştırma ve nakliye',
     ],
-    machines: ['Paletli ekskavatör', 'Hidrolik kırıcı', 'Damperli kamyon'],
+    machines: ['hitachi-135', 'nh-e37c', 'bobcat-s590'],
     faqs: [
-      {
-        q: 'Bina yıkımı için hangi belgeler gerekir?',
-        a: 'Belediyeden yıkım ruhsatı, abonelik kapatma belgeleri ve kentsel dönüşümde ilgili kurum onayları gerekir. Evrak sürecinde size yol gösteriyoruz.',
-      },
       {
         q: 'Yıkım sırasında komşu binalar nasıl korunur?',
         a: 'Yıkım sırası ve makine konumu komşu yapılara göre planlanır, ortak duvarlar kontrollü şekilde ayrılır ve toz sulama ile bastırılır.',
@@ -120,7 +113,7 @@ export const services: Service[] = [
       'Stabilize serme',
       'Dolgu malzemesi temini',
     ],
-    machines: ['Dozer', 'Silindir', 'Lastikli yükleyici', 'Damperli kamyon'],
+    machines: ['bomag-bw120', 'jcb-3cx', 'bobcat-s590'],
     faqs: [
       {
         q: 'Dolgu neden katman katman yapılır?',
@@ -154,7 +147,7 @@ export const services: Service[] = [
       'Kanal kazılarında kaya kırma',
       'Kırılan malzemenin nakliyesi',
     ],
-    machines: ['Hidrolik kırıcı', 'Paletli ekskavatör', 'Damperli kamyon'],
+    machines: ['hitachi-135', 'jcb-3cx'],
     faqs: [
       {
         q: 'Kaya çıkması kazı fiyatını etkiler mi?',
@@ -175,8 +168,8 @@ export const services: Service[] = [
     short: 'Hafriyat toprağı, moloz ve inşaat atığının ruhsatlı döküm sahalarına taşınması.',
     metaTitle: 'Moloz ve Hafriyat Nakliyesi',
     metaDescription:
-      'Hafriyat toprağı, moloz ve inşaat atığı nakliyesi. Damperli kamyonlarla ruhsatlı döküm sahalarına yasal ve hızlı taşıma.',
-    lead: 'Sahadan çıkan her kamyon, yasal bir döküm sahasına gitmelidir. Hafriyat ve molozu belgeli şekilde, planlanan sefer sayısıyla taşıyoruz.',
+      'Hafriyat toprağı, moloz ve inşaat atığı nakliyesi. Damperli kamyonlarla döküm sahalarına hızlı taşıma.',
+    lead: 'Sahadan çıkan her kamyon, yasal bir döküm sahasına gitmelidir. Hafriyat ve molozu planlanan sefer sayısıyla, zamanında taşıyoruz.',
     body: [
       'Kazı ve yıkım işlerimizde nakliye işin içindedir; ayrıca yalnızca nakliye hizmeti de veriyoruz. Sefer sayısını yükleme hızına göre planlayarak sahada bekleyen kamyon ya da biriken toprak bırakmıyoruz.',
       'Döküm, belediyelerin belirlediği ruhsatlı sahalara yapılır. Yükleme sırasında yol temizliğine ve kamyon üstü örtüsüne dikkat ediyoruz.',
@@ -188,7 +181,7 @@ export const services: Service[] = [
       'Ruhsatlı döküm sahasına döküm',
       'Yükleme ve saha temizliği',
     ],
-    machines: ['Damperli kamyon', 'Lastikli yükleyici', 'Kazıcı yükleyici'],
+    machines: ['jcb-3cx', 'bobcat-s590', 'manitou-1840'],
     faqs: [
       {
         q: 'Küçük miktarda moloz da alıyor musunuz?',
@@ -196,7 +189,7 @@ export const services: Service[] = [
       },
       {
         q: 'Bir kamyon kaç metreküp taşır?',
-        a: 'Kullanılan kamyona göre değişmekle birlikte yaygın damperli kamyonlar sefer başına yaklaşık 12–20 m³ gevşek malzeme taşır. Teklif sayfamızdaki hesaplayıcı ile tahmini sefer sayısını görebilirsiniz.',
+        a: 'Kullanılan kamyona göre değişmekle birlikte yaygın damperli kamyonlar sefer başına yaklaşık 12–20 m³ gevşek malzeme taşır.',
       },
     ],
   },
@@ -206,24 +199,25 @@ export const services: Service[] = [
     imageAlt: 'Operatörlü ekskavatör altyapı şantiyesinde çalışıyor',
     code: 'İM',
     title: 'İş Makinesi Kiralama',
-    short: 'Operatörlü ekskavatör, kepçe, kırıcı, dozer ve kamyon kiralama; saatlik, günlük, aylık.',
-    metaTitle: 'Operatörlü İş Makinesi Kiralama',
+    short: 'Kiralık Bobcat, mini ekskavatör, JCB bekoloder, ekskavatör, silindir, teleskopik yükleyici ve forklift; operatörlü.',
+    metaTitle: 'Kiralık İş Makinesi ve Kiralık Bobcat',
     metaDescription:
-      'Operatörlü ekskavatör, kazıcı yükleyici (JCB), kırıcı, dozer, silindir ve damperli kamyon kiralama. Saatlik, günlük ve aylık seçenekler.',
+      'Ümraniye merkezli operatörlü iş makinesi kiralama: kiralık Bobcat, kiralık mini ekskavatör, kiralık JCB bekoloder, 14 tonluk ekskavatör, silindir, teleskopik yükleyici ve forklift. İstanbul geneli.',
     lead: 'Projenizde eksik olan tek şey bir makine ise, operatörüyle birlikte kiralıyoruz. Bakımlı makine, deneyimli operatör, net saat kaydı.',
     body: [
       'Makinelerimiz düzenli bakımdan geçer ve deneyimli operatörlerle birlikte sahaya gelir. Kiralama saatlik, günlük veya aylık yapılabilir.',
-      'İhtiyacınız olan makine tipini bilmiyorsanız işi anlatmanız yeterli; uygun makineyi ve süreyi birlikte belirleriz.',
+      'Dar alanlar ve bina içi işler için kiralık Bobcat (mini yükleyici), 2 ve 4 tonluk kiralık mini ekskavatör ile JCB 1CX mini bekoloder; temel kazısı ve altyapı için kiralık JCB 3CX bekoloder ve 14 tonluk Hitachi paletli ekskavatör sunuyoruz. Sıkıştırma için Bomag silindir, malzeme kaldırma için Manitou teleskopik yükleyici ve forklift de filomuzda.',
+      'Ümraniye merkezli olarak başta Anadolu Yakası olmak üzere İstanbul’un tüm ilçelerine ve çevre illere kiralık iş makinesi gönderiyoruz. İhtiyacınız olan makine tipini bilmiyorsanız işi anlatmanız yeterli; uygun makineyi ve süreyi birlikte belirleriz.',
     ],
     scope: [
-      'Operatörlü paletli ekskavatör',
-      'Kazıcı yükleyici (JCB tipi)',
-      'Hidrolik kırıcı',
-      'Dozer ve silindir',
-      'Damperli kamyon',
-      'Saatlik / günlük / aylık kiralama',
+      'Kiralık Bobcat (mini yükleyici)',
+      'Kiralık mini ekskavatör (2 ve 4 ton)',
+      'Kiralık JCB bekoloder (1CX ve 3CX)',
+      'Kiralık 14 tonluk paletli ekskavatör',
+      'Kiralık silindir, teleskopik yükleyici ve forklift',
+      'Saatlik / günlük / aylık, operatörlü kiralama',
     ],
-    machines: ['Paletli ekskavatör', 'Kazıcı yükleyici', 'Hidrolik kırıcı', 'Dozer', 'Silindir', 'Damperli kamyon'],
+    machines: ['hitachi-135', 'jcb-3cx', 'jcb-1cx', 'nh-e37c', 'wacker-ez17', 'bobcat-s590', 'bomag-bw120', 'manitou-1840', 'baoli-forklift'],
     faqs: [
       {
         q: 'Makineler operatörlü mü kiralanıyor?',
@@ -247,10 +241,6 @@ export const generalFaqs: Faq[] = [
   {
     q: 'Teklifi ne kadar sürede alırım?',
     a: 'Keşif sonrası genellikle aynı gün ya da ertesi iş günü yazılı teklif iletiyoruz.',
-  },
-  {
-    q: 'Hafriyat ruhsatı ve döküm belgeleriyle ilgileniyor musunuz?',
-    a: 'Evet. Belediye hafriyat izni, döküm sahası ve nakliye belgeleri konusunda süreci sizinle birlikte yürütüyoruz.',
   },
   {
     q: 'Hangi bölgelerde hizmet veriyorsunuz?',

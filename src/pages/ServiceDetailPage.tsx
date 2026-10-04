@@ -1,14 +1,13 @@
 import { Link, useParams } from 'react-router'
 import { getService, services } from '../data/services'
 import { machines } from '../data/machines'
-import { company, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
+import { whatsappHref, WA_DEFAULT } from '../data/company'
 import { Icon } from '../components/Icon'
 import { Photo } from '../components/Photo'
+import { PhoneMenu } from '../components/PhoneMenu'
 import { Checks, CtaBand, FaqList, PageHead, SectionHead } from '../components/Blocks'
 import { MachineCard } from './FleetPage'
 import { NotFoundPage } from './NotFoundPage'
-
-const tr = (s: string) => s.toLocaleLowerCase('tr-TR')
 
 export function ServiceDetailPage() {
   const { slug = '' } = useParams()
@@ -17,7 +16,7 @@ export function ServiceDetailPage() {
 
   const idx = services.indexOf(svc)
   const next = services[(idx + 1) % services.length]
-  const used = machines.filter((m) => svc.machines.some((n) => tr(n) === tr(m.name)))
+  const used = machines.filter((m) => svc.machines.includes(m.id))
 
   return (
     <>
@@ -50,7 +49,7 @@ export function ServiceDetailPage() {
               <p>Sahayı görelim, aynı gün ya da ertesi iş günü yazılı teklifinizi iletelim.</p>
               <div className="stack">
                 <Link to="/teklif-al" className="btn btn--accent">Teklif al <Icon name="arrowRight" /></Link>
-                <a href={telHref} className="btn btn--glass"><Icon name="phone" /> {company.phoneDisplay}</a>
+                <PhoneMenu />
                 <a href={whatsappHref(WA_DEFAULT)} className="btn btn--glass" target="_blank" rel="noopener noreferrer"><Icon name="message" /> WhatsApp</a>
               </div>
             </div>

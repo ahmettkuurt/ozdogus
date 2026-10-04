@@ -1,0 +1,48 @@
+# Cloudflare Pages yönlendirmeleri — eski Joomla sitelerinin sayfa adresleri → yeni sayfalar (301)
+# Alan adı yönlendirmeleri (ozdogushafriyat.com → www, eski alan adları → www.ozdogushafriyat.com)
+# burada değil, Cloudflare panelindeki Redirect Rules ile yapılır: docs/cloudflare-kurulum.md
+# Eski alan adından gelen istek önce www.ozdogushafriyat.com'a aynı yolla yönlenir, sonra bu kurallar uygulanır.
+
+/index.php                                        /                                    301
+
+# kiralikismakinalari.gen.tr (eski site)
+/ozdogus-hafriyat.html                            /hakkimizda                          301
+/who-we-are.html                                  /hakkimizda                          301
+/why-us.html                                      /hakkimizda                          301
+/20-home-about.html                               /hakkimizda                          301
+/20-home-about/*                                  /hizmetler/is-makinesi-kiralama      301
+/hafriyatcilar.html                               /hizmetler                           301
+/2-uncategorised.html                             /hizmetler                           301
+/2-uncategorised/67-hafriyat-hizmetleri.html      /hizmetler                           301
+/hafriyat-firmalari.html                          /hizmetler/hafriyat-ve-kazi          301
+/hafriyatcilar/hafriyat-isleri.html               /hizmetler/hafriyat-ve-kazi          301
+/hafriyatcilar/istanbul-hafriyatcilar.html        /hizmetler/hafriyat-ve-kazi          301
+/hafriyatcilar/altyapi-kazi-calismalari.html      /hizmetler/hafriyat-ve-kazi          301
+/hafriyatcilar/asfalt-kesim-kanal-isleri.html     /hizmetler/hafriyat-ve-kazi          301
+/kanal-acma-firmalari.html                        /hizmetler/hafriyat-ve-kazi          301
+/bina-yikim-isleri.html                           /hizmetler/yikim                     301
+/hafriyatcilar/bina-yikim-isleri.html             /hizmetler/yikim                     301
+/bina-guclendirme-firmalari.html                  /hizmetler                           301
+/hafriyatcilar/yapi-bina-guclendirme.html         /hizmetler                           301
+/kiralik-is-makinalari-istanbul.html              /hizmetler/is-makinesi-kiralama      301
+/kiralik-is-makinasi-fiyatlari.html               /hizmetler/is-makinesi-kiralama      301
+/hafriyatcilar/kiralik-vinc.html                  /hizmetler/is-makinesi-kiralama      301
+/component/tags/tag/*                             /hizmetler/is-makinesi-kiralama      301
+/makine-parki.html                                /makine-parki                        301
+/iletisim.html                                    /iletisim                            301
+/slider-1.html                                    /                                    301
+/slider-2.html                                    /                                    301
+/slider-3.html                                    /                                    301
+
+# kiralikbobcat.gen.tr (eski site)
+/ozdogus-hafriyat                                 /hakkimizda                          301
+/hizmetlerimiz                                    /hizmetler                           301
+/hizmetlerimiz/hafriyat-isleri                    /hizmetler/hafriyat-ve-kazi          301
+/hizmetlerimiz/asfalt-kesim-isleri                /hizmetler/hafriyat-ve-kazi          301
+/hizmetlerimiz/kanal-acma-islemi                  /hizmetler/hafriyat-ve-kazi          301
+/hizmetlerimiz/bina-yikim-isleri                  /hizmetler/yikim                     301
+/hizmetlerimiz/yapi-bina-guclendirme              /hizmetler                           301
+/makina-parkuru                                   /makine-parki                        301
+/42-web-analytics-p6/120-makina-parkurumuz        /makine-parki                        301
+/62-web-development-p6/11-hizmet-bolgelerimiz     /iletisim                            301
+/44-technical-support-p6/13-technical-support     /iletisim                            301

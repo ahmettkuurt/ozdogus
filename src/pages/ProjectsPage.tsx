@@ -1,4 +1,4 @@
-import { projects, type Project } from '../data/projects'
+import { publishedProjects as projects, type Project } from '../data/projects'
 import { Photo } from '../components/Photo'
 import { CtaBand, PageHead } from '../components/Blocks'
 

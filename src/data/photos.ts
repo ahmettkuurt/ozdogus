@@ -17,6 +17,15 @@ export const photos = {
   excavator: { w: 1024, h: 791 },
   demolition: { w: 1024, h: 681 },
   aerial2: { w: 1024, h: 682 },
+  // Makine parkı: Wikimedia Commons (CC0 / CC BY-SA) — kaynaklar docs/photo-credits.json
+  'hitachi-135': { w: 1024, h: 768 },
+  'jcb-3cx': { w: 1024, h: 768 },
+  'jcb-1cx': { w: 1024, h: 682 },
+  'nh-e37c': { w: 1024, h: 787 },
+  'bobcat-s590': { w: 1024, h: 576 },
+  'bomag-bw120': { w: 1024, h: 662 },
+  'manitou-1840': { w: 1024, h: 682 },
+  forklift: { w: 1024, h: 791 },
 } as const
 
 export type PhotoName = keyof typeof photos

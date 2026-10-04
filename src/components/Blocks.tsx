@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
-import { company, telHref, whatsappHref, WA_DEFAULT } from '../data/company'
+import { whatsappHref, WA_DEFAULT } from '../data/company'
+import { PhoneMenu } from './PhoneMenu'
 import type { PhotoName } from '../data/photos'
 import type { Faq } from '../data/services'
 import { Icon } from './Icon'
@@ -102,9 +103,7 @@ export function CtaBand({ title = 'Projenizi konuşalım, sahayı birlikte göre
               <Link to="/teklif-al" className="btn btn--accent btn--lg">
                 Teklif Al <Icon name="arrowRight" />
               </Link>
-              <a href={telHref} className="btn btn--glass btn--lg">
-                <Icon name="phone" /> {company.phoneDisplay}
-              </a>
+              <PhoneMenu className="btn btn--glass btn--lg" up />
               <a href={whatsappHref(WA_DEFAULT)} className="btn btn--glass btn--lg" target="_blank" rel="noopener noreferrer">
                 <Icon name="message" /> WhatsApp
               </a>

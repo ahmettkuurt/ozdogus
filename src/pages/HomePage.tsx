@@ -1,19 +1,18 @@
-import { Link, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { company, stats, telHref } from '../data/company'
 import { services, generalFaqs } from '../data/services'
 import { machines } from '../data/machines'
-import { projects } from '../data/projects'
+import { publishedProjects as projects } from '../data/projects'
 import { Icon, type IconName } from '../components/Icon'
 import { Photo } from '../components/Photo'
+import { PhoneMenu } from '../components/PhoneMenu'
 import { Checks, CtaBand, FaqList, SectionHead } from '../components/Blocks'
-import { Calculator } from '../components/Calculator'
-import type { CalcInput } from '../lib/excavation'
 import { MachineCard } from './FleetPage'
 import { ProjectCard } from './ProjectsPage'
 
 const badges: { icon: IconName; t: string; d: string }[] = [
   { icon: 'truck', t: 'Kendi makine parkı', d: 'Taşeronsuz, takvime sadık' },
-  { icon: 'file', t: 'Ruhsatlı döküm', d: 'Belgeli nakliye ve döküm' },
+  { icon: 'shield', t: 'Deneyimli operatörler', d: 'Güvenli ve özenli çalışma' },
   { icon: 'target', t: 'Ücretsiz keşif', d: 'Yerinde ölçüm, yazılı teklif' },
   { icon: 'zap', t: '7/24 acil müdahale', d: 'Yıkım ve kazıda hızlı ekip' },
 ]
@@ -22,21 +21,18 @@ const features: { icon: IconName; t: string; d: string }[] = [
   { icon: 'target', t: 'Ölçülü iş', d: 'Kotlar lazer nivo ile kontrol edilir; parsel projedeki kotta teslim edilir.' },
   { icon: 'clock', t: 'Söz verilen takvim', d: 'Kendi makinelerimizle çalıştığımız için planı biz kurar, biz tutarız.' },
   { icon: 'shield', t: 'Güvenli saha', d: 'İş güvenliği planı, şev kontrolü ve komşu yapı koruması her işin ilk adımı.' },
-  { icon: 'file', t: 'Yasal süreç', d: 'Hafriyat izni, döküm sahası ve nakliye belgelerini sizin yerinize takip ederiz.' },
+  { icon: 'truck', t: 'Kazı ve nakliye bir arada', d: 'Kazı ile nakliye eş zamanlı yürür; sahada toprak yığını birikmez.' },
 ]
 
 const process = [
   { t: 'Keşif', d: 'Sahayı yerinde görür, zemini ve erişimi değerlendiririz.' },
   { t: 'Teklif', d: 'Hacim, süre ve makine planıyla net, yazılı teklif.' },
-  { t: 'İzin & planlama', d: 'Hafriyat izni, döküm sahası ve iş güvenliği planı.' },
+  { t: 'Planlama', d: 'Makine, sefer ve iş güvenliği planı; takvim netleşir.' },
   { t: 'Kazı & nakliye', d: 'Kazı ve nakliye eş zamanlı, kotlar lazerle kontrollü.' },
   { t: 'Teslim', d: 'Parsel temiz, projedeki kotta ve kalıba hazır.' },
 ]
 
 export function HomePage() {
-  const navigate = useNavigate()
-  const toQuote = (c: CalcInput) => navigate(`/teklif-al?${new URLSearchParams({ ...c }).toString()}#teklif-formu`)
-
   return (
     <>
       {/* ---------- HERO ---------- */}
@@ -45,10 +41,10 @@ export function HomePage() {
           <Photo name="hero" priority sizes="100vw" alt="" />
         </div>
         <div className="wrap hero__inner">
-          <p className="eyebrow">Hafriyat · Kazı · Yıkım · Makine kiralama</p>
+          <p className="eyebrow">İstanbul · Hafriyat · Kazı · Yıkım · İş makinesi kiralama</p>
           <h1 id="hero-baslik" className="balance" style={{ marginTop: 20 }}>
             Sağlam yapılar, <span className="accent-text">doğru kazıyla</span> başlar.
-            <span className="sr-only"> {company.name} — hafriyat ve kazı firması</span>
+            <span className="sr-only"> {company.name} — İstanbul hafriyat, kazı, yıkım ve iş makinesi kiralama firması</span>
           </h1>
           <p className="lead">
             Temel kazısından bina yıkımına, kaya kırmadan moloz nakliyesine kadar sahanızı kendi makine parkımız ve
@@ -58,9 +54,7 @@ export function HomePage() {
             <Link to="/teklif-al" className="btn btn--accent btn--lg">
               Ücretsiz keşif isteyin <Icon name="arrowRight" />
             </Link>
-            <a href={telHref} className="btn btn--glass btn--lg">
-              <Icon name="phone" /> {company.phoneDisplay}
-            </a>
+            <PhoneMenu className="btn btn--glass btn--lg" />
           </div>
           <ul className="hero__badges" role="list">
             {badges.map((b) => (
@@ -173,7 +167,7 @@ export function HomePage() {
       <section className="sec surface" aria-labelledby="makineler">
         <div className="wrap">
           <SectionHead eyebrow="Makine parkı" title="Her iş için doğru makine." id="makineler">
-            Ekskavatörden kamyona bakımlı makineler, deneyimli operatörler. Tümü operatörlü kiralanabilir.
+            Ekskavatörden teleskopik yükleyiciye bakımlı makineler, deneyimli operatörler. Tümü operatörlü kiralanabilir.
           </SectionHead>
           <div className="rail" tabIndex={0} aria-label="Makine listesi, yatay kaydırılabilir">
             {machines.map((m) => <MachineCard key={m.id} m={m} compact />)}
@@ -200,16 +194,6 @@ export function HomePage() {
           </div>
         </section>
       )}
-
-      {/* ---------- HESAPLAYICI ---------- */}
-      <section className="sec surface" aria-labelledby="hesapla">
-        <div className="wrap">
-          <SectionHead eyebrow="Hafriyat hesaplama" title="Kaç kamyon toprak çıkar?" id="hesapla">
-            Ölçüleri girin; yerinde hacmi, kabarma sonrası gevşek hacmi ve tahmini kamyon seferini anında görün.
-          </SectionHead>
-          <Calculator onRequest={toQuote} />
-        </div>
-      </section>
 
       {/* ---------- SSS ---------- */}
       <section className="sec" aria-labelledby="sss">

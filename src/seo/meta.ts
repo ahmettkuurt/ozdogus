@@ -1,4 +1,5 @@
 import { company, cityLabel } from '../data/company'
+import { publishedProjects } from '../data/projects'
 import { services, getService, generalFaqs, type Faq } from '../data/services'
 
 export type PageMeta = {
@@ -13,7 +14,9 @@ const SITE = company.siteUrl
 const OG_IMAGE = `${SITE}/og.png`
 const BUSINESS_ID = `${SITE}/#isletme`
 
-const withCity = (s: string) => (cityLabel ? `${s} ${cityLabel}` : s)
+// "İstanbul Hafriyat ve Temel Kazısı" — aramalarda kullanılan sırayla şehir başa gelir
+const withCity = (s: string) => (cityLabel ? `${cityLabel} ${s}` : s)
+const LOCAL = 'Ümraniye merkezli, İstanbul geneli ve çevre illerde hizmet.'
 const fullTitle = (t: string) => `${t} | ${company.name}`
 export const absUrl = (path: string) => `${SITE}${path === '/' ? '/' : path}`
 
@@ -33,6 +36,9 @@ export function businessSchema(): Record<string, unknown> {
     logo: `${SITE}/brand/logo-color.png`,
     image: OG_IMAGE,
     telephone: company.phone,
+    ...(company.phone2 && {
+      contactPoint: [company.phone, company.phone2].map((telephone) => ({ '@type': 'ContactPoint', telephone, contactType: 'customer service', areaServed: 'TR', availableLanguage: 'Turkish' })),
+    }),
     email: company.email,
     priceRange: '₺₺',
     ...(hasAddress && {
@@ -49,7 +55,7 @@ export function businessSchema(): Record<string, unknown> {
       geo: { '@type': 'GeoCoordinates', latitude: company.geo.lat, longitude: company.geo.lng },
     }),
     ...(company.serviceAreas.length && {
-      areaServed: company.serviceAreas.map((name) => ({ '@type': 'City', name })),
+      areaServed: company.serviceAreas.map((name) => ({ '@type': 'AdministrativeArea', name })),
     }),
     ...(company.foundingYear && { foundingDate: String(company.foundingYear) }),
     ...(sameAs.length && { sameAs }),
@@ -111,42 +117,43 @@ type Static = Omit<PageMeta, 'path' | 'jsonLd'> & { crumb?: string; extra?: () =
 
 const staticPages: Record<string, Static> = {
   '/': {
-    title: withCity('Hafriyat, Kazı ve Yıkım Firması'),
+    title: withCity('Hafriyat Firması ve Kiralık İş Makineleri'),
     description:
-      'Özdoğuş Hafriyat: temel kazısı, bina yıkımı, kaya kırma, dolgu-tesviye, moloz nakliyesi ve operatörlü iş makinesi kiralama. Ücretsiz keşif, hızlı teklif.',
+      'Özdoğuş Hafriyat: İstanbul Ümraniye merkezli hafriyat firması. Temel kazısı, bina yıkımı, dolgu-tesviye, moloz nakliyesi, kiralık Bobcat ve operatörlü iş makinesi kiralama. Ücretsiz keşif.',
     extra: () => [businessSchema(), websiteSchema(), faqSchema(generalFaqs)],
   },
   '/hizmetler': {
-    title: 'Hafriyat Hizmetleri',
+    title: withCity('Hafriyat Hizmetleri'),
     description:
-      'Hafriyat ve temel kazısı, yıkım, dolgu ve tesviye, kaya kırma, moloz nakliyesi ve iş makinesi kiralama hizmetlerimizi inceleyin.',
+      `Hafriyat ve temel kazısı, bina yıkımı, dolgu ve tesviye, kaya kırma, moloz nakliyesi ve iş makinesi kiralama. ${LOCAL}`,
     crumb: 'Hizmetler',
   },
   '/makine-parki': {
-    title: 'Makine Parkı',
+    title: 'Makine Parkı – Kiralık Bobcat, Ekskavatör ve JCB',
     description:
-      'Paletli ekskavatör, hidrolik kırıcı, kazıcı yükleyici, dozer, silindir ve damperli kamyonlardan oluşan makine parkımız.',
+      'Kiralık iş makineleri: Bobcat S590, JCB 3CX ve 1CX bekoloder, Hitachi 135 ekskavatör, New Holland ve Wacker Neuson mini ekskavatör, Bomag silindir, Manitou teleskopik yükleyici ve forklift. Operatörlü.',
     crumb: 'Makine Parkı',
   },
   '/projeler': {
     title: 'Referans Projeler',
+    noindex: publishedProjects.length === 0,
     description: 'Özdoğuş Hafriyat’ın tamamladığı kazı, yıkım ve tesviye projelerinden seçmeler: hacim, süre ve kullanılan makineler.',
     crumb: 'Projeler',
   },
   '/hakkimizda': {
     title: 'Hakkımızda',
-    description: `${company.legalName}: kendi makine parkı ve deneyimli ekibiyle hafriyat, yıkım ve altyapı işlerinde çözüm ortağınız.`,
+    description: `1991'den bu yana süren tecrübe: ${company.legalName}, kendi makine parkı ve uzman kadrosuyla İstanbul ve çevresinde hafriyat, yıkım ve altyapı hizmeti veriyor.`,
     crumb: 'Hakkımızda',
   },
   '/teklif-al': {
-    title: 'Hafriyat Hesaplama ve Teklif Al',
+    title: 'Teklif Al',
     description:
-      'Hafriyat hacmini ve kamyon sefer sayısını hemen hesaplayın, ücretsiz keşif ve teklif isteyin. Kazı, yıkım ve nakliye için hızlı dönüş.',
+      `Ücretsiz keşif ve yazılı teklif isteyin: hafriyat, kazı, yıkım, nakliye ve kiralık iş makinesi. ${LOCAL}`,
     crumb: 'Teklif Al',
   },
   '/iletisim': {
     title: 'İletişim',
-    description: `${company.name} iletişim bilgileri: telefon, WhatsApp, e-posta ve çalışma saatleri. Ücretsiz keşif için hemen ulaşın.`,
+    description: `${company.name} iletişim: ${company.phoneDisplay}, ${company.phone2Display}, WhatsApp ve adres (${company.address.district} / ${company.address.city}). ${LOCAL}`,
     crumb: 'İletişim',
     extra: () => [businessSchema()],
   },
@@ -169,8 +176,9 @@ export function getMeta(pathname: string): PageMeta {
     if (page.crumb) jsonLd.push(breadcrumbSchema([{ name: page.crumb, path }]))
     return {
       path,
-      title: path === '/' ? `${company.name} | ${page.title}` : fullTitle(page.title),
+      title: fullTitle(page.title),
       description: page.description,
+      noindex: page.noindex,
       jsonLd,
     }
   }
@@ -181,7 +189,7 @@ export function getMeta(pathname: string): PageMeta {
     return {
       path,
       title: fullTitle(withCity(svc.metaTitle)),
-      description: svc.metaDescription,
+      description: svc.metaDescription.includes('İstanbul') ? svc.metaDescription : `${svc.metaDescription} ${LOCAL}`,
       jsonLd: [
         {
           '@context': 'https://schema.org',
@@ -191,7 +199,7 @@ export function getMeta(pathname: string): PageMeta {
           description: svc.metaDescription,
           url: absUrl(path),
           provider: { '@id': BUSINESS_ID, '@type': 'GeneralContractor', name: company.name, telephone: company.phone },
-          ...(company.serviceAreas.length && { areaServed: company.serviceAreas }),
+          ...(company.serviceAreas.length && { areaServed: company.serviceAreas.map((name) => ({ '@type': 'AdministrativeArea', name })) }),
         },
         faqSchema(svc.faqs),
         breadcrumbSchema([
@@ -204,6 +212,9 @@ export function getMeta(pathname: string): PageMeta {
 
   return NOT_FOUND_META
 }
+
+/** sitemap.xml'e girecek adresler (noindex sayfalar hariç). */
+export const sitemapRoutes = (): string[] => allRoutes().filter((r) => !getMeta(r).noindex)
 
 /** Build sırasında statik HTML üretilecek tüm adresler. */
 export const allRoutes = (): string[] => [
